@@ -26,10 +26,10 @@ export default function PageSignup() {
       }
   
       // Si la respuesta es exitosa, redirige al usuario
-      redirect(`/users`);
+      redirect(`/projectss`);
     } catch (error) {
       console.error("AAAAAAAAAAAAAAAAAAAAAA:", error);
-      redirect(`/users`);
+      redirect(`/projectss`);
     }
   }
 

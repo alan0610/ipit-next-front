@@ -13,7 +13,6 @@ export default function ProjectPage() {
       .then((response) => response.json())
       .then((data) => {
         setProjects(data);
-        console.log("aca esta la data: " + data);
       })
       .catch((error) => console.log(error));
   }, []);

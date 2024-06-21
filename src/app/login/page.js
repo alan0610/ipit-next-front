@@ -25,7 +25,7 @@ export default function PageLogin() {
     // TODO 2: Guardar el token en el localstorage
 
     // TODO 3 redireccionar a la pagina original, antes de pedir credenciales
-    redirect(`/users`);
+    redirect(`/projectss`);
   }
 
   return (
