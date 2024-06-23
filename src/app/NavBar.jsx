@@ -7,7 +7,7 @@ import ItemsNav from './MocNav.js';
 
 export default function NavBar(){ 
   const [isOpen, setIsOpen] = useState(false);
-  
+    
   return (
     <>
       <nav className="bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700">

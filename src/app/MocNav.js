@@ -10,6 +10,10 @@ const ItemsNav = [
     {
       url: "/signup",
       contenido: "Crear Cuenta"
+    },
+    {
+      url: "/login",
+      contenido: "Salir"
     }
   ]
   

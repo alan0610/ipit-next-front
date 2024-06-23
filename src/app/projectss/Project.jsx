@@ -12,7 +12,7 @@ export default function Project(props) {
         <div className="text-center">
           <Link href={`/projectss/${props.Id}`}>
             <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 hover:shadow-md transition duration-200">
-              Invertir
+              Saber mas
             </button>
           </Link>
         </div>

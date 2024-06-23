@@ -1,11 +1,15 @@
+"use client";
 // https://mflixbackend.azurewebsites.net/api/users/login
-
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import { useState } from "react";
 
 export default function PageLogin() {
+  const [error, setError] = useState(null);
+
   async function handlerLogin(formData) {
-    "use server";
+
+
     const user = {
       email: formData.get("email"),
       password: formData.get("password"),
@@ -21,11 +25,19 @@ export default function PageLogin() {
     );
 
     // TODO1 : preguntar en el request por el request.status
+
+    if(request.status === 401){
+      setError("Usuario o contraseña incorrectos");
+      return;
+    }
+    
+
     const token = (await request.json()).token;
-    // TODO 2: Guardar el token en el localstorage
+    localStorage.setItem("token", token);
 
     // TODO 3 redireccionar a la pagina original, antes de pedir credenciales
-    redirect(`/projectss`);
+/*     redirect(`/projectss`); */
+      location.href = "/projectss";
   }
 
   return (
@@ -106,6 +118,15 @@ export default function PageLogin() {
               Start a 14 day free trial
             </a>
           </p>
+
+          {error && (
+            <div className="mt-6 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+              <strong className="font-bold">Error!</strong>
+              <span className="block sm:inline">{error}</span>
+            </div>
+          )}
+
+
         </div>
       </div>
     </>
