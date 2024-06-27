@@ -1,9 +1,18 @@
+"use client";
 import { redirect } from "next/navigation";
+import { useEffect } from "react";
 const ProjectsPage = "/Projects";
 
 export default function PageSignup() {
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if(token) {
+      location.href = ProjectsPage;
+    }
+  }, [])
+
   async function handlerSignup(formData) {
-    "use server";
     const user = {
       username: formData.get("username"),
       password: formData.get("password"),

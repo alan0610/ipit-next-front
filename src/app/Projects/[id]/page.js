@@ -1,78 +1,92 @@
 "use client";
 import { useState, useEffect } from "react";
-import jwt_decode from "jwt-decode";
-import Link from "next/link";
+import { jwtDecode } from 'jwt-decode'
+
+const loginPage = "/login";
 
 export default function DetailsPage({ params }) {
   const { id } = params;
-  const [project, setProject] = useState([]);
+  const [project, setProject] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [message, setMessage] = useState("");
   const url = `${process.env.apiUrl}/projects`;
   const urlInvest = `${process.env.apiUrl}/users/invest`;
 
   useEffect(() => {
-    fetch(url)
-      .then((response) => response.json())
-      .then((data) => {
-        setProject(data.find((project) => project["_id"] === id));
+    const fetchProject = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          location.href = loginPage;
+        }
+        const response = await fetch(url, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        const data = await response.json();
+        const selectedProject = data.find((project) => project._id === id);
+        setProject(selectedProject);
         setLoading(false);
-      })
-      .catch((error) => console.log(error));
-  }, [id]);
+      } catch (error) {
+        console.log(error);
+        setLoading(false);
+      }
+    };
 
-  const [message, setMessage] = useState("");
+    fetchProject();
+  }, [id]);
 
   const handleInvest = async () => {
     try {
-      // Extrae el token del localStorage
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem('token');
       if (!token) {
-        throw new Error("No token found");
+        throw new Error('No token found');
       }
 
-      // Decodifica el token para obtener el payload sin verificarlo
-      const decodedToken = jwt.decode(token);
-      const userId = decodedToken.userId; // Asegúrate de que el token contenga el userId
+      // Decodifica el token JWT correctamente
+      const decodedToken = jwtDecode(token);
+      const userId = decodedToken._id;
+      console.log(decodedToken)
 
-      // Realiza la solicitud fetch con el userId y projectId
       const response = await fetch(urlInvest, {
-        method: "PUT",
+        method: 'PUT',
         headers: {
-          "Content-Type": "application/json",
-          Authentication: token, // Opcionalmente, puedes enviar el token como header para autenticación
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           userId: userId,
-          projectId: project["_id"],
+          projectId: id,
         }),
       });
 
       if (!response.ok) {
-        throw new Error("Error al realizar la inversión");
+        throw new Error('Error al realizar la inversión');
       }
 
       const data = await response.json();
 
       if (data.success) {
-        setMessage("Operación realizada");
+        setMessage('Operación realizada');
       } else {
-        setMessage("Saldo Insuficiente");
+        setMessage('Saldo Insuficiente');
       }
     } catch (error) {
-      console.error("Error al invertir:", error);
-      setMessage("Error al realizar la inversión");
+      console.error('Error al invertir:', error);
+      setMessage('Error al realizar la inversión');
     }
   };
 
   return (
     <main>
       <div>
-        <div>
-          {loading ? (
-            <div className="loader-container">
-              <div className="loader"></div>
-            </div>
-          ) : (
+        {loading ? (
+          <div className="loader-container">
+            <div className="loader"></div>
+          </div>
+        ) : (
+          project && (
             <div className="max-w-lg mx-auto bg-white shadow-md rounded-lg overflow-hidden mb-6">
               <div className="p-4">
                 <h2 className="text-2xl font-semibold text-gray-800">
@@ -141,8 +155,8 @@ export default function DetailsPage({ params }) {
                 </div>
               </div>
             </div>
-          )}
-        </div>
+          )
+        )}
       </div>
     </main>
   );

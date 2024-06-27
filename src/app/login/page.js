@@ -1,10 +1,17 @@
 "use client";
-import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
 const ProjectsPage = "/Projects";
 
 export default function LoginPage() {
   const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if(token) {
+      location.href = ProjectsPage;
+    }
+  }, [])
 
   async function handlerLogin(formData) {
     const user = {
@@ -28,7 +35,7 @@ export default function LoginPage() {
       return;
     }
 
-    const token = (await request.json()).token;
+    const { token } = await request.json();
     localStorage.setItem("token", token);
 
     // Redireccionar a la pagina original, antes de pedir credenciales
@@ -45,7 +52,13 @@ export default function LoginPage() {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form className="space-y-6" action={handlerLogin} method="POST">
+          <form
+            className="space-y-6"
+            onSubmit={(e) => {
+              e.preventDefault();
+              handlerLogin(new FormData(e.target));
+            }}
+          >
             <div>
               <label
                 htmlFor="username"
@@ -60,16 +73,7 @@ export default function LoginPage() {
                   type="text"
                   autoComplete="username"
                   required
-                  className="block 
-                  w-full 
-                  rounded-md 
-                  border-0 
-                  px-3 py-1.5 
-                  text-gray-900 
-                  shadow-sm 
-                  ring-1 ring-inset ring-gray-300 
-                  focus:ring-2 focus:ring-inset focus:ring-indigo-600 
-                  sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 px-3 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
             </div>
@@ -90,16 +94,7 @@ export default function LoginPage() {
                   type="password"
                   autoComplete="current-password"
                   required
-                  className="block 
-                  w-full 
-                  rounded-md 
-                  border-0 
-                  px-3 py-1.5 
-                  text-gray-900 
-                  shadow-sm 
-                  ring-1 ring-inset ring-gray-300 
-                  focus:ring-2 focus:ring-inset focus:ring-indigo-600 
-                  sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 px-3 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
             </div>
@@ -107,18 +102,7 @@ export default function LoginPage() {
             <div>
               <button
                 type="submit"
-                className="flex 
-                w-full 
-                justify-center 
-                rounded-md 
-                bg-indigo-600 
-                px-3 py-1.5 
-                text-sm text-white 
-                font-semibold 
-                leading-6 
-                shadow-sm 
-                hover:bg-indigo-500 
-                focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm text-white font-semibold leading-6 shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 Ingresar
               </button>
