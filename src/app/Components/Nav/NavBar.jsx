@@ -1,20 +1,24 @@
 "use client";
 
-import { useState } from 'react';
-import  NavList from './NavList';
-import ItemsNav from './MocNav.js';
+import { useState } from "react";
+import NavList from "./NavList";
+import ItemsNav from "./MocNav";
 
-
-export default function NavBar(){ 
+export default function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
-    
+
   return (
     <>
       <nav className="bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4 align-middle">
-          <a href="#" className="flex items-center space-x-3 rtl:space-x-reverse">
+          <a
+            href="#"
+            className="flex items-center space-x-3 rtl:space-x-reverse"
+          >
             <img src="asd.jpeg" className="h-8" alt="Flowbite Logo" />
-            <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">iPiT</span>
+            <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
+              iPiT
+            </span>
           </a>
           <button
             onClick={() => setIsOpen(!isOpen)}
@@ -31,14 +35,16 @@ export default function NavBar(){
               <path stroke="currentColor" d="M1 1h15M1 7h15M1 13h15" />
             </svg>
           </button>
-          <div className={`md:flex flex-col md:flex-row md:items-center w-full md:w-auto ${isOpen ? 'block' : 'hidden'}`}>
-          <NavList ItemsNav={ItemsNav}/>
+          <div
+            className={`md:flex flex-col md:flex-row md:items-center w-full md:w-auto ${
+              isOpen ? "block" : "hidden"
+            }`}
+          >
+            <NavList ItemsNav={ItemsNav} />
           </div>
-          <div>
-            
-          </div>
+          <div></div>
         </div>
       </nav>
     </>
   );
-};
+}

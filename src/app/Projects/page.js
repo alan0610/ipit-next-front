@@ -1,15 +1,13 @@
 "use client";
 import { useState, useEffect } from "react";
 import ProjectList from "./ProjectList";
-//https://raw.githubusercontent.com/ORT-PabloFernandez/PNTP2-REACT-EJEMPLO/main/src/data/Users.json
 
 export default function ProjectPage() {
   const [projects, setProjects] = useState([]);
+  const url = `${process.env.apiUrl}/projects`;
 
   useEffect(() => {
-    fetch(
-      "http://localhost:3000/api/users/projects"
-    )
+    fetch(url)
       .then((response) => response.json())
       .then((data) => {
         setProjects(data);
