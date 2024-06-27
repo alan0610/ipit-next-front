@@ -69,6 +69,8 @@ export default function DetailsPage({ params }) {
 
       if (data.success) {
         setMessage('Operación realizada');
+        alert('Operación realizada')
+        location.href = "/Users"
       } else {
         setMessage('Saldo Insuficiente');
       }
